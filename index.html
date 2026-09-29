@@ -997,6 +997,8 @@ html[data-skin="farm"] .emp .dtag{display:table;margin-top:3px;padding:1px 7px 2
 #shipOT .shMore{height:42px;border-radius:14px;cursor:pointer;font:600 15px/1 "Fredoka","Mitr",sans-serif;color:#5B3A1C;
   background:#FFF6DF;border:3px solid var(--o);box-shadow:0 3px 0 var(--o);}
 #shipOT .shMore:active{transform:translateY(2px);box-shadow:0 1px 0 var(--o);}
+html[data-skin="farm"] .swlab{grid-column:1/-1;margin:4px 2px -2px;font:600 13px/1 "Fredoka","Mitr",sans-serif;color:#7A4E24;letter-spacing:.02em;}
+html[data-skin="farm"] .sw.swx{background-size:cover!important;background-position:center!important;}
 
 </style>
 <script>(function(){var r=document.documentElement;r.setAttribute("data-skin","farm");
@@ -1072,7 +1074,7 @@ setTimeout(function(){r.classList.remove("boot","boot-scene","boot-ui","iris");v
 
   <!-- ================= THEME ================= -->
   <section class="card">
-    <div class="ch"><div class="ico">🎨</div><h2>สีฟอร์ม 24 สี</h2><span class="note" id="themeNote"></span></div>
+    <div class="ch"><div class="ico">🎨</div><h2>สีฟอร์ม 24 สี + 8 ลาย</h2><span class="note" id="themeNote"></span></div>
     <div class="toggle-row">
       <div><div class="t">✨ ใช้สีมาตรฐานอัตโนมัติ</div>
         <div style="font-size:11.5px;color:var(--text-2);font-weight:600;">สี Coral ตามแบบฟอร์ม · วันหยุดเปลี่ยนสีให้เอง</div></div>
@@ -1163,6 +1165,15 @@ const THEMES=[
   {id:"cocoa", name:"Cocoa", e:"🎨", c1:"#B6A9A5", c2:"#5D4037", deep:"#4C342D", ink:"#fff"},
   {id:"slate", name:"Slate", e:"🎨", c1:"#B7C4CB", c2:"#607D8B", deep:"#4F6772", ink:"#fff"},
   {id:"charcoal", name:"Charcoal", e:"🎨", c1:"#A5ACB0", c2:"#37474F", deep:"#2D3A41", ink:"#fff"}
+  /* 8 special looks: colour + pattern are drawn by the form renderer */
+  ,{id:"rainbow", name:"Rainbow", e:"🎨", style:"rainbow", c1:"#E9D5FF", c2:"#7C4DFF", deep:"#5B34D6", ink:"#fff"}
+  ,{id:"stripe", name:"Candy Stripe", e:"🎨", style:"stripe", c1:"#B2EBF2", c2:"#14A3A3", deep:"#0E7F7F", ink:"#fff"}
+  ,{id:"mono", name:"Black & White", e:"🎨", style:"mono", c1:"#E0E0E0", c2:"#262626", deep:"#111111", ink:"#fff"}
+  ,{id:"pinkwhite", name:"Pink & White", e:"🎨", style:"pinkwhite", c1:"#FCE4EC", c2:"#EC6FA0", deep:"#C94F80", ink:"#fff"}
+  ,{id:"gingham", name:"Gingham", e:"🎨", style:"gingham", c1:"#FFCDD2", c2:"#E0525A", deep:"#B83A42", ink:"#fff"}
+  ,{id:"cartoon", name:"Cartoon", e:"🎨", style:"cartoon", c1:"#B3E5FC", c2:"#1E9BE0", deep:"#1478B3", ink:"#fff"}
+  ,{id:"fruit", name:"Fruit", e:"🎨", style:"fruit", c1:"#FFE0B2", c2:"#F4702E", deep:"#C8551E", ink:"#fff"}
+  ,{id:"cute", name:"Cute", e:"🎨", style:"cute", c1:"#E1BEE7", c2:"#B25CC9", deep:"#8E3FA5", ink:"#fff"}
 ];
 const RAINBOW_GRAD="linear-gradient(120deg,#F87171,#FBBF24,#34D399,#38BDF8,#A78BFA,#F472B6)";
 
@@ -1384,7 +1395,9 @@ function renderSwatches(){
   THEMES.forEach((t,i)=>{
     const b=document.createElement("button");
     b.className="sw"; b.textContent=t.e; b.title=t.name;
-    b.style.background = t.c2; b.style.setProperty("--sw",t.c2);
+    if(i===24){ const lb=document.createElement("div"); lb.className="swlab"; lb.textContent="ลายพิเศษ"; host.appendChild(lb); }
+    b.style.background = t.style ? `url(${swatchBg(t)}) center/cover` : t.c2; b.style.setProperty("--sw",t.c2);
+    if(t.style) b.classList.add("swx");
     b.setAttribute("aria-pressed",String(!state.holiday && state.themeIdx===i));
     b.setAttribute("aria-label","ธีม "+t.name);
     b.onclick=()=>{
@@ -1461,7 +1474,7 @@ function drawTeam(c,x,y,w,h,team,A,main){
   c.save(); c.shadowColor="rgba(31,41,55,.06)"; c.shadowBlur=14; c.shadowOffsetY=3;
   rr(c,x,y,w,h,10); c.fillStyle="#fff"; c.fill(); c.restore();
   c.save(); rr(c,x,y,w,h,10); c.clip();
-  c.fillStyle=live?A:"#CED7DE"; c.fillRect(x,y,w,hb);
+  if(live) bandFill(c,x,y,w,hb,A); else { c.fillStyle="#CED7DE"; c.fillRect(x,y,w,hb); }
   /* header: icon + title, centred as one group */
   const title=main?`TEAM ${team} · ทีมหลัก`:(rows.length?`TEAM ${team} · ${rows.length} คน`:`TEAM ${team} · ไม่มีคนทำ OT`);
   const f=FF(700,21*k), ww=tw(c,title,f), ic=26, gx=x+w/2-(ww+ic+8)/2, cy=y+hb/2;
@@ -1510,7 +1523,7 @@ function drawRemark(c,x,y,w,h,A){
     const r=OT_RULES[key], ry=y+hb+hr+i*rowH, cy=ry+rowH/2;
     if(i%2){ c.fillStyle=mixW(A,.06); c.fillRect(x,ry,w,rowH); }
     if(i){ c.fillStyle=mixW(A,.13); c.fillRect(x,ry,w,1); }
-    rr(c,x+w*CX[0]-32,cy-14,64,28,6); c.fillStyle=A; c.fill();
+    bandFill(c,x+w*CX[0]-32,cy-14,64,28,STY==="rainbow"?RBW[i%RBW.length]:A,6);
     tx(c,key,x+w*CX[0],cy,FF(600,15),"#fff","center");
     tx(c,r.time,x+w*CX[1],cy,FF(400,16.5),INK,"center");
     tx(c,r.total,x+w*CX[2],cy,FF(600,16.5),Ad,"center");
@@ -1530,7 +1543,7 @@ function drawBackdrop(c,A){
   c.beginPath(); c.moveTo(0,215); c.bezierCurveTo(260,150,520,196,820,150); c.bezierCurveTo(1060,112,1300,120,FORM_W,70); c.lineTo(FORM_W,300); c.lineTo(0,300); c.fill();
   c.globalAlpha=.35; c.beginPath(); c.moveTo(0,120); c.bezierCurveTo(220,40,380,90,640,60); c.bezierCurveTo(900,30,1180,70,FORM_W,20); c.lineTo(FORM_W,60); c.bezierCurveTo(1180,110,900,80,640,110); c.bezierCurveTo(380,140,200,100,0,170); c.fill();
   c.restore();
-  drawPattern(c,A);
+  if(!styleBackdrop(c,A)) drawPattern(c,A);
 }
 
 /* ---------- faint aluminium-plant pattern, re-shuffled every export ----------
@@ -1572,6 +1585,7 @@ function drawPattern(c,A){
 }
 
 function buildCanvas(){
+  STY=state.holiday?null:(T().style||null);
   const A=formAccent(), Ad=mixK(A,.08), SC=2, R=1443;
   const cv=document.createElement("canvas"); cv.width=FORM_W*SC; cv.height=FORM_H*SC;
   const c=cv.getContext("2d"); c.scale(SC,SC);
@@ -1579,12 +1593,12 @@ function buildCanvas(){
 
   /* title — "REQUEST OT · RM" with the RM part in the accent colour */
   const fT=FF(700,46), t1="REQUEST OT", t2=" · RM PROCESS";
-  tx(c,t1,44,70,fT,INK); tx(c,t2,44+tw(c,t1,fT),70,fT,A);
+  const tx2=44+tw(c,t1,fT); tx(c,t1,44,70,fT,INK); tx(c,t2,tx2,70,fT,accentPaint(c,tx2,tw(c,t2,fT),A));
 
   /* pills: shift + head count, each with a drawn icon */
   const day=state.shift==="Day", p1=day?"กะกลางวัน (Day)":"กะกลางคืน (Night)", fP=FF(600,19);
   const w1=18+22+10+tw(c,p1,fP)+22;
-  rr(c,44,103,w1,42,21); c.fillStyle=A; c.fill();
+  bandFill(c,44,103,w1,42,A,21);
   (day?icoSun:icoMoon)(c,44+18+11,124,"#fff");
   tx(c,p1,44+18+22+10,124,fP,"#fff");
   const p2=`ผู้ทำ OT ${state.entries.length} คน`, fP2=FF(600,18), x2=44+w1+14, w2=18+22+8+tw(c,p2,fP2)+22;
@@ -1601,7 +1615,7 @@ function buildCanvas(){
   tx(c,sub,R,126,fS,GREY2,"right"); icoFactory(c,R-tw(c,sub,fS)-18,125,A);
 
   /* rule */
-  rr(c,44,168,1399,4,2); c.fillStyle=A; c.fill();
+  bandFill(c,44,168,1399,4,A,2);
 
   /* team cards: main team drawn larger, like the sample */
   const NW=421, MW=473, GAP=22; let x=64;
@@ -1613,6 +1627,114 @@ function buildCanvas(){
   const foot=`Request OT · RM PROCESS · ${dateTH}`, fF=FF(400,14.5);
   tx(c,foot,R,1049,fF,GREY,"right"); icoCoil(c,R-tw(c,foot,fF)-14,1049,8,GREY);
   return cv;
+}
+
+/* ---------- special looks: rainbow, stripes, black & white, pink & white,
+   gingham, cartoon, fruit, cute. All shapes are drawn here (no emoji). ---------- */
+let STY=null;
+const RBW=["#FF5A5F","#FF9F1C","#FFD23F","#3BCEAC","#2EA7F2","#7C4DFF","#E84A9A"];
+function rbGrad(c,x0,x1){ const g=c.createLinearGradient(x0,0,x1,0); RBW.forEach((col,i)=>g.addColorStop(i/(RBW.length-1),col)); return g; }
+/* fill an accent band (header, pill, rule, chip) in the current look */
+function bandFill(c,x,y,w,h,A,r){
+  c.save(); if(r!=null) rr(c,x,y,w,h,r); else { c.beginPath(); c.rect(x,y,w,h); }
+  c.fillStyle = STY==="rainbow" ? rbGrad(c,x,x+w) : A; c.fill(); c.clip();
+  c.fillStyle="rgba(255,255,255,.2)";
+  if(h<40&&STY!=="stripe"&&STY!=="gingham"){ c.restore(); return; }   /* small chips: plain fill */
+  if(STY==="stripe"){ for(let t=x-h;t<x+w+h;t+=18){ c.beginPath(); c.moveTo(t,y+h); c.lineTo(t+h,y); c.lineTo(t+h+8,y); c.lineTo(t+8,y+h); c.fill(); } }
+  else if(STY==="gingham"){ const q=12; c.fillStyle="rgba(255,255,255,.16)";
+    for(let t=x;t<x+w;t+=q*2) c.fillRect(t,y,q,h); for(let t=y;t<y+h;t+=q*2) c.fillRect(x,t,w,q); }
+  else if(STY==="pinkwhite"||STY==="cute"){ c.fillStyle="rgba(255,255,255,.22)"; for(let t=x+10;t<x+w;t+=26) for(let u=y+8,k=0;u<y+h;u+=16,k++){ c.beginPath(); c.arc(t+(k%2)*13,u,2.6,0,6.283); c.fill(); } }
+  else if(STY==="cartoon"){ c.fillStyle="rgba(255,255,255,.22)"; for(let t=x+14;t<x+w;t+=46){ starPath(c,t,y+h*.3+((t/46)%2)*h*.4,4.5); c.fill(); } }
+  else if(STY==="fruit"){ c.fillStyle="rgba(255,255,255,.2)"; for(let t=x+12;t<x+w;t+=34){ c.beginPath(); c.ellipse(t,y+h/2+((t/34)%2?5:-5),4,2.4,.6,0,6.283); c.fill(); } }
+  c.restore();
+}
+/* text paint for the accent part of the title */
+function accentPaint(c,x,w,A){ return STY==="rainbow" ? rbGrad(c,x,x+w) : A; }
+
+/* whole-sheet wash + pattern for the special looks (drawn behind the cards) */
+function styleBackdrop(c,A){
+  const W=FORM_W,H=FORM_H,rnd=(a,b)=>a+Math.random()*(b-a);
+  c.save();
+  if(STY==="rainbow"){
+    RBW.forEach((col,i)=>{ const x=(i/(RBW.length-1))*W, g=c.createRadialGradient(x,0,0,x,0,420); g.addColorStop(0,mixW(col,.22)); g.addColorStop(1,"rgba(255,255,255,0)"); c.fillStyle=g; c.fillRect(0,0,W,420); });
+    c.lineWidth=10; c.globalAlpha=.16;
+    RBW.forEach((col,i)=>{ c.strokeStyle=col; c.beginPath(); c.arc(W*.5,H+380,640+i*12,Math.PI*1.08,Math.PI*1.92); c.stroke(); });
+  } else if(STY==="stripe"){
+    c.fillStyle=mixW(A,.1); for(let t=-H;t<W;t+=46){ c.beginPath(); c.moveTo(t,H); c.lineTo(t+H,0); c.lineTo(t+H+20,0); c.lineTo(t+20,H); c.fill(); }
+  } else if(STY==="gingham"){
+    c.fillStyle=mixW(A,.09); const q=30; for(let t=0;t<W;t+=q*2) c.fillRect(t,0,q,H); for(let t=0;t<H;t+=q*2) c.fillRect(0,t,W,q);
+  } else if(STY==="pinkwhite"){
+    c.fillStyle=mixW(A,.1); c.fillRect(0,0,W,H); c.fillStyle="#fff";
+    for(let y=14,k=0;y<H;y+=34,k++) for(let x=(k%2)*20+10;x<W;x+=40){ c.beginPath(); c.arc(x,y,6,0,6.283); c.fill(); }
+  } else if(STY==="mono"){
+    c.strokeStyle="rgba(0,0,0,.06)"; c.lineWidth=1; for(let t=0;t<W;t+=24){ c.beginPath(); c.moveTo(t,0); c.lineTo(t,H); c.stroke(); } for(let t=0;t<H;t+=24){ c.beginPath(); c.moveTo(0,t); c.lineTo(W,t); c.stroke(); }
+  } else {
+    const set=DOODLES[STY]; if(!set){ c.restore(); return false; }
+    const placed=[]; let tries=0;
+    while(placed.length<46&&tries++<1500){
+      const r=rnd(14,28), x=rnd(10,W-10), y=rnd(10,H-10);
+      if(x>30&&x<900&&y>20&&y<160) continue; if(x>1080&&y>20&&y<150) continue; if(x>1000&&y>1028&&y<1072) continue;
+      if((x>64+r*.4&&x<1423-r*.4&&y>196+r*.4&&y<561-r*.4)||(x>44+r*.4&&x<1443-r*.4&&y>589+r*.4&&y<1019-r*.4)) continue;   /* hidden under cards */
+      if(placed.some(p=>Math.hypot(p[0]-x,p[1]-y)<p[2]+r+22)) continue;
+      placed.push([x,y,r]);
+      c.save(); c.globalAlpha=.42; c.translate(x,y); c.rotate(rnd(-.4,.4));
+      set[Math.floor(Math.random()*set.length)](c,r); c.restore();
+    }
+  }
+  c.restore(); return true;
+}
+
+/* doodles — each draws around (0,0) at size r */
+const DD={
+  star(c,r,col){ c.fillStyle=col||"#FFD54F"; starPath(c,0,0,r); c.fill(); },
+  cloud(c,r){ c.fillStyle="#9ED8F7"; [[-.45,.1,.45],[0,-.18,.58],[.48,.08,.42]].forEach(p=>{c.beginPath();c.arc(p[0]*r,p[1]*r,p[2]*r,0,6.283);c.fill();}); c.fillRect(-.85*r,.05*r,1.7*r,.45*r); },
+  smile(c,r){ c.fillStyle="#FFD54F"; c.beginPath(); c.arc(0,0,r*.8,0,6.283); c.fill(); c.fillStyle="#6D4C41";
+    [-.28,.28].forEach(d=>{c.beginPath();c.arc(d*r,-.15*r,r*.09,0,6.283);c.fill();}); c.strokeStyle="#6D4C41"; c.lineWidth=r*.09; c.lineCap="round"; c.beginPath(); c.arc(0,.02*r,r*.36,.25,Math.PI-.25); c.stroke(); },
+  bolt(c,r){ c.fillStyle="#FFB300"; c.beginPath(); c.moveTo(.15*r,-r); c.lineTo(-.45*r,.1*r); c.lineTo(-.02*r,.1*r); c.lineTo(-.2*r,r); c.lineTo(.45*r,-.15*r); c.lineTo(.04*r,-.15*r); c.closePath(); c.fill(); },
+  bubble(c,r){ c.fillStyle="#FF8A80"; rr(c,-.85*r,-.6*r,1.7*r,1.05*r,.3*r); c.fill(); c.beginPath(); c.moveTo(-.3*r,.4*r); c.lineTo(-.5*r,.85*r); c.lineTo(0,.4*r); c.fill();
+    c.fillStyle="#fff"; [-.4,0,.4].forEach(d=>{c.beginPath();c.arc(d*r,-.07*r,r*.1,0,6.283);c.fill();}); },
+  heart(c,r,col){ c.fillStyle=col||"#F48FB1"; c.beginPath(); c.moveTo(0,.75*r); c.bezierCurveTo(-1.1*r,0,-.55*r,-.95*r,0,-.35*r); c.bezierCurveTo(.55*r,-.95*r,1.1*r,0,0,.75*r); c.fill(); },
+  strawberry(c,r){ c.fillStyle="#EF5350"; c.beginPath(); c.moveTo(0,.9*r); c.bezierCurveTo(-.9*r,.2*r,-.8*r,-.55*r,0,-.45*r); c.bezierCurveTo(.8*r,-.55*r,.9*r,.2*r,0,.9*r); c.fill();
+    c.fillStyle="#66BB6A"; for(let i=0;i<5;i++){ c.save(); c.translate(0,-.48*r); c.rotate(-1.2+i*.6); c.beginPath(); c.ellipse(0,-.16*r,.1*r,.2*r,0,0,6.283); c.fill(); c.restore(); }
+    c.fillStyle="#FFF59D"; [[-.3,-.1],[.25,-.12],[0,.15],[-.2,.4],[.22,.35]].forEach(p=>{c.beginPath();c.ellipse(p[0]*r,p[1]*r,.05*r,.08*r,0,0,6.283);c.fill();}); },
+  orange(c,r){ c.fillStyle="#FFA726"; c.beginPath(); c.arc(0,0,r*.85,0,6.283); c.fill(); c.fillStyle="#FFE0B2"; c.beginPath(); c.arc(0,0,r*.68,0,6.283); c.fill();
+    c.fillStyle="#FFB74D"; for(let i=0;i<8;i++){ const a=i*Math.PI/4; c.beginPath(); c.moveTo(0,0); c.arc(0,0,r*.6,a+.08,a+Math.PI/4-.08); c.closePath(); c.fill(); } },
+  cherry(c,r){ c.strokeStyle="#7CB342"; c.lineWidth=r*.09; c.lineCap="round"; c.beginPath(); c.moveTo(-.35*r,.3*r); c.quadraticCurveTo(-.2*r,-.5*r,.2*r,-.8*r); c.moveTo(.35*r,.35*r); c.quadraticCurveTo(.3*r,-.4*r,.2*r,-.8*r); c.stroke();
+    c.fillStyle="#E53935"; [[-.38,.45],[.38,.5]].forEach(p=>{c.beginPath();c.arc(p[0]*r,p[1]*r,.34*r,0,6.283);c.fill();}); },
+  melon(c,r){ c.fillStyle="#66BB6A"; c.beginPath(); c.arc(0,-.2*r,r,0,Math.PI); c.fill(); c.fillStyle="#FF6F79"; c.beginPath(); c.arc(0,-.2*r,r*.82,0,Math.PI); c.fill();
+    c.fillStyle="#37474F"; [[-.4,.15],[0,.3],[.4,.15],[-.18,.05],[.2,.05]].forEach(p=>{c.beginPath();c.ellipse(p[0]*r,p[1]*r,.05*r,.09*r,0,0,6.283);c.fill();}); },
+  lemon(c,r){ c.fillStyle="#FFEE58"; c.beginPath(); c.ellipse(0,0,.85*r,.6*r,0,0,6.283); c.fill(); c.beginPath(); c.ellipse(.85*r,0,.14*r,.1*r,0,0,6.283); c.ellipse(-.85*r,0,.14*r,.1*r,0,0,6.283); c.fill(); },
+  apple(c,r){ c.fillStyle="#EF5350"; c.beginPath(); c.arc(-.3*r,.1*r,.55*r,0,6.283); c.arc(.3*r,.1*r,.55*r,0,6.283); c.fill();
+    c.fillStyle="#66BB6A"; c.beginPath(); c.ellipse(.18*r,-.62*r,.28*r,.13*r,-.5,0,6.283); c.fill(); c.strokeStyle="#795548"; c.lineWidth=r*.08; c.beginPath(); c.moveTo(0,-.35*r); c.lineTo(.02*r,-.7*r); c.stroke(); },
+  bow(c,r){ c.fillStyle="#F48FB1"; c.beginPath(); c.moveTo(0,0); c.lineTo(-.9*r,-.55*r); c.lineTo(-.9*r,.55*r); c.closePath(); c.moveTo(0,0); c.lineTo(.9*r,-.55*r); c.lineTo(.9*r,.55*r); c.closePath(); c.fill();
+    c.fillStyle="#EC407A"; c.beginPath(); c.arc(0,0,.2*r,0,6.283); c.fill(); },
+  paw(c,r){ c.fillStyle="#CE93D8"; c.beginPath(); c.ellipse(0,.25*r,.42*r,.34*r,0,0,6.283); c.fill();
+    [[-.5,-.25],[-.18,-.55],[.18,-.55],[.5,-.25]].forEach(p=>{c.beginPath();c.ellipse(p[0]*r,p[1]*r,.15*r,.19*r,0,0,6.283);c.fill();}); },
+  flower(c,r){ c.fillStyle="#B39DDB"; for(let i=0;i<5;i++){ const a=i*Math.PI*2/5; c.beginPath(); c.arc(Math.cos(a)*.45*r,Math.sin(a)*.45*r,.36*r,0,6.283); c.fill(); }
+    c.fillStyle="#FFD54F"; c.beginPath(); c.arc(0,0,.28*r,0,6.283); c.fill(); },
+  cat(c,r){ c.fillStyle="#FFCC80"; c.beginPath(); c.moveTo(-.7*r,-.2*r); c.lineTo(-.6*r,-.85*r); c.lineTo(-.2*r,-.55*r); c.lineTo(.2*r,-.55*r); c.lineTo(.6*r,-.85*r); c.lineTo(.7*r,-.2*r); c.fill();
+    c.beginPath(); c.ellipse(0,0,.75*r,.6*r,0,0,6.283); c.fill(); c.fillStyle="#6D4C41"; [-.28,.28].forEach(d=>{c.beginPath();c.arc(d*r,-.05*r,.08*r,0,6.283);c.fill();});
+    c.fillStyle="#F48FB1"; c.beginPath(); c.arc(0,.15*r,.07*r,0,6.283); c.fill(); }
+};
+const DOODLES={
+  cartoon:[DD.star,DD.cloud,DD.smile,DD.bolt,DD.bubble,(c,r)=>DD.star(c,r*.7,"#81D4FA")],
+  fruit:[DD.strawberry,DD.orange,DD.cherry,DD.melon,DD.lemon,DD.apple],
+  cute:[DD.heart,DD.bow,DD.paw,DD.flower,DD.cat,(c,r)=>DD.star(c,r*.7,"#F8BBD0")]
+};
+
+/* round preview for the colour picker */
+const SW_CACHE={};
+function swatchBg(t){
+  if(SW_CACHE[t.id]) return SW_CACHE[t.id];
+  const cv=document.createElement("canvas"); cv.width=cv.height=72; const c=cv.getContext("2d"), prev=STY; STY=t.style;
+  if(t.style==="mono"){ c.fillStyle="#fff"; c.fillRect(0,0,72,72); c.fillStyle="#262626"; c.beginPath(); c.moveTo(0,0); c.lineTo(72,0); c.lineTo(0,72); c.fill(); }
+  else if(t.style==="pinkwhite"){ c.fillStyle="#fff"; c.fillRect(0,0,72,72); c.fillStyle="#F48FB1"; for(let y=6,k=0;y<72;y+=14,k++) for(let x=(k%2)*8+4;x<72;x+=16){ c.beginPath(); c.arc(x,y,4,0,6.283); c.fill(); } }
+  else if(t.style==="gingham"){ c.fillStyle="#fff"; c.fillRect(0,0,72,72); c.fillStyle="rgba(224,82,90,.55)"; for(let x=0;x<72;x+=18) c.fillRect(x,0,9,72); for(let y=0;y<72;y+=18) c.fillRect(0,y,72,9); }
+  else if(t.style==="stripe"){ c.fillStyle="#fff"; c.fillRect(0,0,72,72); c.fillStyle=t.c2; for(let x=-72;x<72;x+=16){ c.beginPath(); c.moveTo(x,72); c.lineTo(x+72,0); c.lineTo(x+80,0); c.lineTo(x+8,72); c.fill(); } }
+  else if(t.style==="rainbow"){ const g=c.createLinearGradient(0,0,72,72); RBW.forEach((col,i)=>g.addColorStop(i/(RBW.length-1),col)); c.fillStyle=g; c.fillRect(0,0,72,72); }
+  else { c.fillStyle=t.c1; c.fillRect(0,0,72,72); c.translate(36,38);
+    ({cartoon:DD.star,fruit:DD.strawberry,cute:DD.heart})[t.style](c,24); }
+  STY=prev; return SW_CACHE[t.id]=cv.toDataURL("image/png");
 }
 
 const toBlob=cv=>new Promise((res,rej)=>cv.toBlob(b=>b?res(b):rej(new Error("render failed")),"image/png"));
@@ -1714,7 +1836,7 @@ $("lineBtn").onclick=async()=>{
   if(!lastBlob) return;
   const f=new File([lastBlob],fileName(),{type:"image/png"});
   if(navigator.canShare && navigator.canShare({files:[f]})){
-    try{ await navigator.share({files:[f],title:"Request OT (RM)",text:"ใบขอทำงานล่วงเวลา 🏭"}); toast("ส่งเรียบร้อย 🎉"); }catch(e){}
+    try{ await navigator.share({files:[f]}); toast("ส่งเรียบร้อย 🎉"); }catch(e){}
   }else{ download(lastBlob); toast("เครื่องนี้แชร์ตรงไม่ได้ — บันทึกให้แทน 💾"); }
 };
 $("scrim").onclick=closeSheet;
@@ -2867,7 +2989,7 @@ document.addEventListener("click",function(e){
   var f=new File([blob],(typeof fileName==="function"?fileName():"OT-Request.png"),{type:"image/png"});
   if(!(navigator.canShare&&navigator.canShare({files:[f]})))return;
   e.stopImmediatePropagation();e.preventDefault();
-  navigator.share({files:[f],title:"OT Request"}).then(function(){toastSafe("เลือก “บันทึกรูปภาพ” ได้เลย");}).catch(function(){});
+  navigator.share({files:[f]}).then(function(){toastSafe("เลือก “บันทึกรูปภาพ” ได้เลย");}).catch(function(){});
 },true);
 function toastSafe(m){try{toast(m);}catch(e){}}
 
