@@ -1,0 +1,25 @@
+{
+  "id": "./",
+  "name": "OT Request · HRM PROCESS",
+  "short_name": "OT Request",
+  "description": "ขอทำงานล่วงเวลา HOT ROLLING — UACJ (Thailand)",
+  "lang": "th",
+  "dir": "ltr",
+  "start_url": "./?source=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#4FBDEB",
+  "theme_color": "#4FBDEB",
+  "categories": ["productivity", "business"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    { "src": "screenshots/home.png", "sizes": "780x1688", "type": "image/png", "form_factor": "narrow", "label": "หน้าหลัก" },
+    { "src": "screenshots/request.png", "sizes": "780x1688", "type": "image/png", "form_factor": "narrow", "label": "รายการขอ OT" }
+  ]
+}
