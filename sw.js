@@ -5,7 +5,7 @@
    ทุกครั้งที่อัปไฟล์ใหม่ขึ้น GitHub ให้เปลี่ยนเลข CACHE ด้านล่าง
    (หน้า index ดึงของใหม่ก่อนอยู่แล้ว แต่ไอคอน/ไฟล์อื่นจะใช้ของในแคช)
 ============================================================================= */
-const CACHE = 'otreq-v7';
+const CACHE = 'otreq-v8';
 const CORE = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png',
