@@ -1763,6 +1763,15 @@ function buildCanvas(){
   let cv=document.createElement("canvas"), c=null, sc=SC;
   for(const k of [SC,1.5,1]){ cv.width=Math.round(FORM_W*k); cv.height=Math.round(FORM_H*k); c=cv.getContext("2d"); if(c){ sc=k; break; } }
   c.setTransform(sc,0,0,sc,0,0);
+  /* Safari on some iPhones ignores textAlign "right"/"center" for Thai (complex-script)
+     text on canvas, so every aligned line is placed by its measured width instead */
+  const fillText0=c.fillText.bind(c);
+  c.fillText=function(t,x,y,m){ const al=c.textAlign;
+    if(al==="left"||al==="start") return m==null?fillText0(t,x,y):fillText0(t,x,y,m);
+    const w=c.measureText(String(t)).width; c.textAlign="left";
+    const nx=(al==="right"||al==="end")?x-w:x-w/2;
+    if(m==null) fillText0(t,nx,y); else fillText0(t,nx,y,m);
+    c.textAlign=al; };
   if(HERO){ /* banner fills the space between the title and the date block */
     const dT=formDateTH();
     const left=44+tw(c,"REQUEST OT · RM PROCESS",FF(700,46))+30, right=R-Math.max(tw(c,dT,FF(700,31)),tw(c,"Hot Rolling · RM PROCESS",FF(600,15.5))+26)-30;
