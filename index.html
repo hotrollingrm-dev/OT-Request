@@ -1129,8 +1129,29 @@ html[data-season="hw"] .hwDeco.hwR:has(.hwStack){top:-62px;}
 html[data-season="hw"] .swlab{color:#F3E8FF;}
 html[data-season="hw"] .fhud .bank{background:linear-gradient(180deg,#3A2459,#22153A);box-shadow:inset 0 0 0 2px #7C4DD6,0 3px 0 #0E0817;border-color:#0E0817;}
 
+/* ---------- Halloween extras + season switch ---------- */
+html:not([data-season="hw"]) :is(#hwBg,.hwDeco,.hwWeb,.hwSendP){display:none !important;}
+.hwIco{display:grid;place-items:center;width:100%;height:100%;}
+.hwIco svg{width:78%;height:78%;display:block;}
+html[data-skin="farm"] .mini.hwToggle{background:radial-gradient(circle at 50% 36%,#FFF7DD 0,#FFE39A 56%,#F4B845 100%);}
+html[data-skin="farm"] .mini.hwToggle .hwIco svg{width:70%;height:70%;filter:drop-shadow(0 1px 0 rgba(74,42,18,.4));}
+html[data-season="hw"] .mini.hwToggle{background:radial-gradient(circle at 50% 40%,#5B2EA6 0,#3A1C70 70%) !important;box-shadow:0 0 14px rgba(255,150,40,.55),0 3px 0 #0E0817 !important;}
+.hwWeb{position:absolute;right:0;bottom:0;width:64px;height:64px;pointer-events:none;transform:scaleY(-1);opacity:.75;z-index:0;}
+.hwWeb svg{display:block;}
+html[data-season="hw"] .app .card > :not(.hwWeb):not(.hwDeco){position:relative;z-index:1;}
+html[data-season="hw"] #sendBtn{overflow:visible;}
+.hwSendP{position:absolute;left:-8px;top:50%;width:48px;height:44px;margin-top:-26px;pointer-events:none;z-index:2;
+  filter:drop-shadow(0 0 10px rgba(255,170,60,.85)) drop-shadow(0 4px 4px rgba(0,0,0,.4));animation:hwFlicker 2.4s ease-in-out infinite;}
+.hwSendP svg{width:100%;height:100%;display:block;}
+@keyframes hwFlicker{0%,100%{filter:drop-shadow(0 0 10px rgba(255,170,60,.85)) drop-shadow(0 4px 4px rgba(0,0,0,.4));}45%{filter:drop-shadow(0 0 16px rgba(255,190,80,1)) drop-shadow(0 4px 4px rgba(0,0,0,.4));}55%{filter:drop-shadow(0 0 6px rgba(255,150,40,.6)) drop-shadow(0 4px 4px rgba(0,0,0,.4));}}
+html.scrolling .hwSendP{animation-play-state:paused;}
+html[data-season="hw"] .ch .ico .hwIco svg{width:82%;height:82%;}
+/* stickers rest on the card's top edge (bottom anchored) so they never cover the header icon */
+html[data-season="hw"] .hwDeco,html[data-season="hw"] .hwDeco.hwR:has(.hwStack){top:auto;bottom:calc(100% - 8px);}
+html[data-season="hw"] .app .card{margin-top:58px;}
+
 </style>
-<script>(function(){var r=document.documentElement;r.setAttribute("data-skin","farm");r.setAttribute("data-season","hw");
+<script>(function(){var r=document.documentElement;r.setAttribute("data-skin","farm");var sp=null;try{sp=localStorage.getItem("otSeason");}catch(e){}if(sp?sp==="hw":new Date().getMonth()===9)r.setAttribute("data-season","hw");
 if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){r.classList.add("boot","boot-scene","boot-ui");
 setTimeout(function(){r.classList.remove("boot","boot-scene","boot-ui","iris");var w=document.getElementById("welcome");if(w)w.remove();},7000);}})();</script>
 </head>
@@ -3700,7 +3721,61 @@ function hwBackdrop(){
     '<span class="hwBat b1">'+HWS.bat(54)+'</span><span class="hwBat b2">'+HWS.bat(38)+'</span><span class="hwBat b3">'+HWS.bat(30)+'</span>');
   bg.id="hwBg";document.body.insertBefore(bg,document.body.firstChild);
 }
-if(HW){ try{ hwBackdrop(); hwDecorate(); new MutationObserver(function(){hwDecorate();}).observe(document.querySelector(".app")||document.body,{childList:true}); }catch(e){} }
+
+/* ---------- Halloween extras: cobwebs, glowing pumpkin on the send button,
+   spooky section icons, and a pumpkin button that switches season ---------- */
+var HWI={
+  web:'<svg viewBox="0 0 80 80" width="64" height="64"><g stroke="rgba(235,225,255,.55)" stroke-width="1.1" fill="none">'+
+    '<path d="M80 0L8 72M80 0L30 78M80 0L0 50M80 0L56 80M80 0L0 22"/>'+
+    '<path d="M64 0q2 14 16 16M48 0q2 26 32 32M32 0q4 40 48 48M16 0q6 54 64 64" /></g>'+
+    '<path d="M44 36v14" stroke="rgba(235,225,255,.6)" stroke-width="1"/><circle cx="44" cy="54" r="4.4" fill="#120B1C"/><circle cx="44" cy="58.5" r="3.2" fill="#120B1C"/>'+
+    '<path d="M40 53l-5-3M40 56l-6 0M48 53l5-3M48 56l6 0M41 59l-4 4M47 59l4 4" stroke="#120B1C" stroke-width="1.2"/></svg>',
+  hat:'<svg viewBox="0 0 40 40"><ellipse cx="20" cy="31" rx="17" ry="4.5" fill="#1B1622"/><path d="M11 30q2-12 7-18q4-5 11-6q-5 4-6 10t0 14z" fill="#2A2333"/><path d="M11 27q8 3 12 1l-.4-4q-6 2-11 0z" fill="#8A4FE0"/><rect x="14.5" y="23.5" width="4.5" height="4" rx="1" fill="none" stroke="#F5B921" stroke-width="1.3"/></svg>',
+  ghost:'<svg viewBox="0 0 40 40"><path d="M15 6q10 0 10 11v15l-3-2-3 3-2-3-2 3-3-3-3 2V17q0-11 6-11z" fill="#F4EEFF"/><path d="M27 10q8 0 8 9v12l-2-2-2 2-2-2-2 2V19" fill="#D9CCF2"/>'+
+    '<circle cx="12.5" cy="16" r="1.6" fill="#2A1F33"/><circle cx="18" cy="16" r="1.6" fill="#2A1F33"/><ellipse cx="15.3" cy="21" rx="2" ry="1.6" fill="#2A1F33"/></svg>',
+  potion:'<svg viewBox="0 0 40 40"><rect x="16" y="5" width="8" height="5" rx="1.5" fill="#B98B5A"/><path d="M17 10h6v6q8 3 8 11a11 11 0 0 1-22 0q0-8 8-11z" fill="rgba(255,255,255,.85)"/>'+
+    '<path d="M10 25q10-4 20 0a10 10 0 0 1-20 0z" fill="#7CFF9E"/><circle cx="16" cy="28" r="1.6" fill="#E6FFEC"/><circle cx="22" cy="30" r="1.1" fill="#E6FFEC"/></svg>',
+  cauldron:'<svg viewBox="0 0 40 40"><path d="M14 12q-4-6 2-9M22 12q4-6-1-10" stroke="#B388FF" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M7 17q-1 14 13 14t13-14z" fill="#2A2333"/>'+
+    '<ellipse cx="20" cy="17" rx="13" ry="3.6" fill="#7CFF9E"/><rect x="5" y="15" width="30" height="3.4" rx="1.7" fill="#3A3344"/><rect x="10" y="30" width="3" height="5" rx="1" fill="#2A2333"/><rect x="27" y="30" width="3" height="5" rx="1" fill="#2A2333"/></svg>',
+  clock:'<svg viewBox="0 0 40 40"><path d="M20 8q-11-2-14 9q-3 12 7 17q7 3 7 0q0 3 7 0q10-5 7-17q-3-11-14-9z" fill="#FF8A1E"/><path d="M19 8q-1-4 3-6" stroke="#5E7A2A" stroke-width="2.4" stroke-linecap="round"/>'+
+    '<circle cx="20" cy="21" r="8" fill="#FFE8B0"/><path d="M20 16v5l3.4 2" stroke="#3A2459" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+  bat:'<svg viewBox="0 0 40 40"><rect x="7" y="10" width="26" height="24" rx="4" fill="#F4EEFF"/><rect x="7" y="10" width="26" height="7" rx="3" fill="#8A4FE0"/>'+
+    '<path d="M20 25q-2-3-4-1q-3-3-7-2q3 2 2 4q4 0 6 3q1-2 3-1q2-1 3 1q2-3 6-3q-1-2 2-4q-4-1-7 2q-2-2-4 1z" fill="#1B1622"/></svg>',
+  pump:'<svg viewBox="0 0 120 110"><defs><radialGradient id="hwP2" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#FFC266"/><stop offset=".5" stop-color="#FF8A1E"/><stop offset="1" stop-color="#C24E06"/></radialGradient></defs>'+
+    '<path d="M60 22q-30-6-44 22q-12 30 10 50q18 14 34 10q16 4 34-10q22-20 10-50q-14-28-44-22z" fill="url(#hwP2)"/><path d="M57 24q-2-12 8-18l4 4q-6 6-5 14z" fill="#5E7A2A"/>'+
+    '<path d="M34 50l14 8-16 4zM86 50l-14 8 16 4z" fill="#FFE07A"/><path d="M32 72q28 20 56 0q-4 14-12 16l-4-6-6 8-6-8-6 8-6-8-4 6q-8-2-12-16z" fill="#FFE07A"/></svg>'
+};
+var HW_ICON_FOR=[["กะ","clock"],["ทีม","hat"],["พนักงาน","ghost"],["วันที่","bat"],["รายการ","potion"],["ลาย","cauldron"]];
+function hwIcons(on){
+  document.querySelectorAll(".app .card .ch").forEach(function(ch){
+    var ico=ch.querySelector(".ico"), h=ch.querySelector("h2"); if(!ico||!h) return;
+    if(on){ if(ico.dataset.hw) return; var k=null; HW_ICON_FOR.some(function(p){ if(h.textContent.indexOf(p[0])>=0){k=p[1];return true;} return false; });
+      if(!k) return; ico.dataset.orig=ico.innerHTML; ico.dataset.hw="1"; ico.innerHTML='<span class="hwIco">'+HWI[k]+'</span>'; }
+    else if(ico.dataset.hw){ ico.innerHTML=ico.dataset.orig||""; delete ico.dataset.hw; }
+  });
+}
+function hwExtras(){
+  document.querySelectorAll(".app .card.hwBlack").forEach(function(cd){ if(!cd.querySelector(".hwWeb")){ var w=el("span","hwWeb",HWI.web); w.setAttribute("aria-hidden","true"); cd.appendChild(w); } });
+  var sb=$$("sendBtn"); if(sb&&!sb.querySelector(".hwSendP")){ var p=el("span","hwSendP",HWI.pump); p.setAttribute("aria-hidden","true"); sb.appendChild(p); }
+}
+function setSeason(on,save){
+  HW=!!on; if(on) R.setAttribute("data-season","hw"); else R.removeAttribute("data-season");
+  if(save){ try{ localStorage.setItem("otSeason",on?"hw":"farm"); }catch(e){} }
+  hwIcons(on); var b=$$("seasonBtn"); if(b){ b.setAttribute("aria-pressed",String(on)); b.classList.toggle("on",on); }
+  try{ layout(); resizeCv(); }catch(e){}
+}
+(function(){
+  try{ hwBackdrop(); }catch(e){}
+  hwDecorate(); hwExtras();
+  new MutationObserver(function(){ hwDecorate(); hwExtras(); if(HW) hwIcons(true); }).observe(document.querySelector(".app")||document.body,{childList:true});
+  var mode=$$("modeBtn");
+  if(mode){ var b=el("button","mini hwToggle",'<span class="hwIco">'+HWI.pump+'</span>'); b.id="seasonBtn"; b.type="button";
+    b.setAttribute("aria-label","สลับธีม Halloween / ฟาร์ม"); b.title="ธีม Halloween";
+    mode.parentNode.insertBefore(b,mode);
+    b.addEventListener("click",function(){ setSeason(!HW,true); toastSafe(HW?"ธีม Halloween 🎃":"ธีมฟาร์มใบไม้ร่วง 🍂"); }); }
+  setSeason(HW,false);
+})();
+
 
 /* ==========================================================================
    BOOT
