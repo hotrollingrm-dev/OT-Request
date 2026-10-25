@@ -1053,8 +1053,84 @@ html.scrolling #farm *,html.scrolling #farm,html.scrolling #farmFg *,html.scroll
 #shipOT .shMore{border:0;border-radius:14px;font:500 14px/1 "Mitr",sans-serif;color:#2B3A52;background:rgba(255,255,255,.88);box-shadow:0 8px 20px -10px rgba(40,50,70,.45);}
 #shipOT .shMore:active{transform:translateY(1px);box-shadow:none;}
 
+/* ==========================================================================
+   HALLOWEEN SEASON — purple & black, clay-style stickers on every card
+   ========================================================================== */
+html[data-season="hw"][data-skin="farm"]{
+  --o:#120B1C; --o2:#2B1A44;
+  --t1:#F6EEFF; --t2:#C7B3E8;
+  --panel:linear-gradient(180deg,#26202F 0%,#17131D 100%);
+  --chip:#2E2739; --field-in:#1C1724;
+  --org1:#FFB347; --org2:#FF8A1E; --org3:#E2620A;
+  background:#140B22;
+}
+html[data-season="hw"].boot::after{background:linear-gradient(180deg,#2A1548,#140B22) !important;}
+html[data-season="hw"] :is(#farm,#farmCv,#farmFg,#farmFx,#fClock){display:none !important;}
+#hwBg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:radial-gradient(120% 70% at 75% 10%,#4B2A7E 0%,#2A1548 45%,#140B22 100%);}
+#hwBg svg{position:absolute;inset:0;width:100%;height:100%;}
+.hwBat{position:absolute;top:18%;left:-80px;animation:hwFly 16s linear infinite;opacity:.9;}
+.hwBat svg{animation:hwFlap .28s ease-in-out infinite alternate;transform-origin:50% 40%;}
+.hwBat.b2{top:30%;animation-duration:22s;animation-delay:-8s;}.hwBat.b3{top:9%;animation-duration:19s;animation-delay:-14s;}
+@keyframes hwFly{0%{transform:translate(0,0);}50%{transform:translate(55vw,-30px);}100%{transform:translate(115vw,10px);}}
+@keyframes hwFlap{from{transform:scaleY(1);}to{transform:scaleY(.55);}}
+html.scrolling .hwBat,html.scrolling .hwBat svg{animation-play-state:paused;}
+
+/* header */
+html[data-season="hw"] .hero h1{color:#fff;text-shadow:0 3px 0 #3B1D66,0 0 22px rgba(167,110,255,.55);}
+html[data-season="hw"] .hero .hi,html[data-season="hw"] .hero .sub{color:#E9DBFF;text-shadow:0 2px 0 #2B1A44;}
+html[data-season="hw"] .fhud .bar,html[data-season="hw"] .fhud .wal{background:linear-gradient(180deg,#3A2459,#22153A);border-color:#0E0817;}
+html[data-season="hw"] .theme-pill{background:linear-gradient(180deg,#5B2EA6,#3E1C7A) !important;border-color:#0E0817 !important;}
+html[data-season="hw"] .mini{background:radial-gradient(circle at 50% 36%,#FFD08A 0,#FF9A3C 58%,#D9620A 100%) !important;border-color:#0E0817 !important;}
+html[data-season="hw"] .stat{background:linear-gradient(180deg,#2E2140,#1C1428) !important;border-color:#0E0817 !important;color:#F6EEFF;box-shadow:inset 0 2px 0 rgba(255,255,255,.08),0 4px 0 #0E0817 !important;}
+html[data-season="hw"] .stat .k{color:#C7B3E8;}
+
+/* cards: purple or black slabs with soft depth (like the reference) */
+html[data-season="hw"] .app .card{margin-top:34px;border:0;border-radius:22px;color:var(--t1);
+  box-shadow:0 14px 30px -12px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.08),inset 0 -6px 0 rgba(0,0,0,.25);}
+html[data-season="hw"] .app .card.hwPurple{--panel:linear-gradient(180deg,#8A4FE0 0%,#6B33C4 100%);--chip:#5A2AA8;--field-in:#4C2391;--t2:#E2D1FF;
+  background:linear-gradient(180deg,#8A4FE0 0%,#6B33C4 100%);}
+html[data-season="hw"] .app .card.hwBlack{background:linear-gradient(180deg,#26202F 0%,#17131D 100%);}
+html[data-season="hw"] .card::before,html[data-season="hw"] .card::after{display:none;}
+html[data-season="hw"] .ch h2{color:#fff;text-shadow:none;}
+html[data-season="hw"] .ch .ico{background:radial-gradient(circle at 42% 34%,#5B4A72 0,#2E2440 100%);border-color:#0E0817;}
+html[data-season="hw"] .ch .note{background:rgba(255,255,255,.12);color:#F3E8FF;border-color:transparent;box-shadow:none;}
+html[data-season="hw"] .seg{background:rgba(0,0,0,.28);border-color:transparent;}
+html[data-season="hw"] :is(.seg button,.team,.tab,.emp,.ot){background:var(--chip);border-color:rgba(0,0,0,.35);color:var(--t1);}
+html[data-season="hw"] .emp[aria-pressed="true"]{background:linear-gradient(180deg,#3A2C4E,#4A3863);}
+html[data-season="hw"] .toggle-row,html[data-season="hw"] .row,html[data-season="hw"] .input{background:var(--field-in);border-color:rgba(0,0,0,.35);color:var(--t1);}
+html[data-season="hw"] .tg{background:#3A2C4E;}
+html[data-season="hw"] .btn-ghost{background:linear-gradient(180deg,#3A2C4E,#2A2038);color:#F3E8FF;}
+html[data-season="hw"] .sheet{--panel:linear-gradient(180deg,#26202F,#17131D);}
+html[data-season="hw"] .sheet-scroll{background:#120E18;border-color:#2B1A44;}
+html[data-season="hw"] .grab{background:linear-gradient(180deg,#8A4FE0,#5A2AA8);}
+html[data-season="hw"] .foot,html[data-season="hw"] footer{color:#C7B3E8;}
+
+/* stickers sit on the top corners and lean outside the card */
+.hwDeco{position:absolute;top:-30px;z-index:3;pointer-events:none;display:flex;align-items:flex-end;filter:drop-shadow(0 6px 6px rgba(0,0,0,.45));}
+.hwDeco svg{display:block;}
+.hwDeco.hwL{left:-12px;}.hwDeco.hwR{right:-10px;}
+.hwDeco .hwStack{position:relative;display:block;width:76px;height:86px;}
+.hwDeco .hwStack svg:first-child{position:absolute;left:0;top:0;z-index:2;}
+.hwDeco .hwStack svg:last-child{position:absolute;left:12px;top:34px;}
+.hwDeco.hwL{animation:hwBob 3.6s ease-in-out infinite;}.hwDeco.hwR{animation:hwBob 4.2s ease-in-out -1.4s infinite;}
+@keyframes hwBob{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-4px) rotate(2deg);}}
+html.scrolling .hwDeco{animation-play-state:paused;}
+@media (prefers-reduced-motion:reduce){.hwDeco,.hwBat,.hwBat svg{animation:none;}}
+html[data-season="hw"] .app .card .ch{position:relative;z-index:4;}
+
+/* welcome + send overlays turn to night */
+html[data-season="hw"] #welcome.mill{background:linear-gradient(180deg,#120A20 0%,#2A1548 40%,#5A2E8C 62%,#7B4AB8 70%,#7B4AB8 100%);}
+html[data-season="hw"] #shipOT{background:linear-gradient(180deg,#1A0E2E 0%,#3A1E66 45%,#6E3DB0 85%,#7E4CC0 100%);}
+html[data-season="hw"] #shipOT .shGround{background:#4A4054;}
+html[data-season="hw"] .app .card{margin-top:42px;}
+html[data-season="hw"] .hwDeco{top:-40px;}
+html[data-season="hw"] .hwDeco.hwR:has(.hwStack){top:-62px;}
+html[data-season="hw"] .swlab{color:#F3E8FF;}
+html[data-season="hw"] .fhud .bank{background:linear-gradient(180deg,#3A2459,#22153A);box-shadow:inset 0 0 0 2px #7C4DD6,0 3px 0 #0E0817;border-color:#0E0817;}
+
 </style>
-<script>(function(){var r=document.documentElement;r.setAttribute("data-skin","farm");
+<script>(function(){var r=document.documentElement;r.setAttribute("data-skin","farm");r.setAttribute("data-season","hw");
 if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){r.classList.add("boot","boot-scene","boot-ui");
 setTimeout(function(){r.classList.remove("boot","boot-scene","boot-ui","iris");var w=document.getElementById("welcome");if(w)w.remove();},7000);}})();</script>
 </head>
@@ -1655,13 +1731,19 @@ function drawPattern(c,A){
   c.restore();
 }
 
+/* Thai date built by hand: Safari on some iPhones formats th-TH differently
+   (adds "พ.ศ.", other spacing), which made the date block wider than planned */
+const TH_MONTHS=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+function formDateTH(){ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(state.date||""); if(!m) return String(state.date||"");
+  return (+m[3])+" "+TH_MONTHS[+m[2]-1]+" "+(+m[1]+543); }
 function buildCanvas(){
   STY=state.holiday?null:(T().style||null); HERO=STY==="hero"?T():null; HBOX=null;
   const A=formAccent(), Ad=mixK(A,.08), SC=2, R=1443;
-  const cv=document.createElement("canvas"); cv.width=FORM_W*SC; cv.height=FORM_H*SC;
-  const c=cv.getContext("2d"); c.scale(SC,SC);
+  let cv=document.createElement("canvas"), c=null, sc=SC;
+  for(const k of [SC,1.5,1]){ cv.width=Math.round(FORM_W*k); cv.height=Math.round(FORM_H*k); c=cv.getContext("2d"); if(c){ sc=k; break; } }
+  c.setTransform(sc,0,0,sc,0,0);
   if(HERO){ /* banner fills the space between the title and the date block */
-    const dT=(()=>{try{return new Date(state.date+"T00:00:00").toLocaleDateString("th-TH",{day:"numeric",month:"long",year:"numeric"});}catch(e){return state.date;}})();
+    const dT=formDateTH();
     const left=44+tw(c,"REQUEST OT · RM PROCESS",FF(700,46))+30, right=R-Math.max(tw(c,dT,FF(700,31)),tw(c,"Hot Rolling · RM PROCESS",FF(600,15.5))+26)-30;
     HBOX={x:left,y:12,w:Math.max(200,right-left),h:140}; }
   drawBackdrop(c,A);
@@ -1683,10 +1765,10 @@ function buildCanvas(){
   tx(c,p2,x2+18+22+8,124,fP2,Ad);
 
   /* date block (right) — label with calendar icon, big Thai date, plant line with factory icon */
-  const dateTH=(()=>{try{return new Date(state.date+"T00:00:00").toLocaleDateString("th-TH",{day:"numeric",month:"long",year:"numeric"});}catch(e){return state.date;}})();
+  const dateTH=formDateTH();
   const lab="วันที่ / DATE", fL=FF(400,15);
   tx(c,lab,R,50,fL,GREY,"right"); icoCal(c,R-tw(c,lab,fL)-16,50,GREY);
-  tx(c,dateTH,R,88,FF(700,31),INK,"right");
+  txFit(c,dateTH,R,88,700,31,INK,"right",380);
   const sub="Hot Rolling · RM PROCESS", fS=FF(600,15.5);
   tx(c,sub,R,126,fS,GREY2,"right"); icoFactory(c,R-tw(c,sub,fS)-18,125,A);
 
@@ -2160,6 +2242,7 @@ async function makePreview(){
   try{ await Promise.all(["400","600","700"].map(w=>document.fonts.load(w+' 32px "Kanit"',"กขOT"))); }catch(e){}
   const cv=buildCanvas();
   lastBlob=await toBlob(cv);
+  cv.width=cv.height=0;   /* free the big canvas right away (iOS keeps a tight canvas-memory budget) */
   if(lastURL) URL.revokeObjectURL(lastURL);
   lastURL=URL.createObjectURL(lastBlob);
   $("sheetScroll").innerHTML=`<img src="${lastURL}" alt="ตัวอย่างใบขอ OT">`;
@@ -2763,7 +2846,7 @@ function frame(t){
   if(document.hidden) return;
   camX+=(camTX-camX)*Math.min(1,dt*3.2);
   applyLayers(false);tweenHud();
-  if(scrolling) return;
+  if(scrolling||HW) return;
   ctx.clearRect(0,0,W,H);
   if(pAT!==pA){pA+=(pAT-pA)*Math.min(1,dt*4);if(Math.abs(pAT-pA)<.02){pA=pAT;if(pA===0&&pNext){kind=pNext;pNext=null;fill();pAT=1;}}}
   var sp=spd,s=SCENES[cur]||{},i,p;
@@ -3517,6 +3600,107 @@ function showInstall(kind){
 addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e;setTimeout(function(){showInstall("android");},4200);});
 addEventListener("appinstalled",function(){hideInstall(true);toastSafe("ติดตั้งแอปเรียบร้อย");});
 if(isIOS&&!isStandalone&&/Safari/.test(UA)&&!/CriOS|FxiOS|Line\//.test(UA)) setTimeout(function(){showInstall("ios");},4800);
+
+
+/* ==========================================================================
+   14 · HALLOWEEN SEASON — purple & black night theme with clay-style stickers
+        (jack-o'-lanterns, candy, skulls, a black cat, a witch hat, bats).
+        Everything is drawn here as SVG; nothing copies existing artwork.
+   ========================================================================== */
+var HW=R.getAttribute("data-season")==="hw";
+var HWS={
+  pumpkin:function(s){return '<svg viewBox="0 0 120 110" width="'+s+'" height="'+(s*110/120|0)+'"><defs>'+
+    '<radialGradient id="hwP" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#FFC266"/><stop offset=".5" stop-color="#FF8A1E"/><stop offset="1" stop-color="#C24E06"/></radialGradient>'+
+    '<radialGradient id="hwPin" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#FFF6A8"/><stop offset=".6" stop-color="#FFC233"/><stop offset="1" stop-color="#E08A0A"/></radialGradient></defs>'+
+    '<ellipse cx="60" cy="104" rx="44" ry="5" fill="rgba(0,0,0,.35)"/>'+
+    '<path d="M60 22q-30-6-44 22q-12 30 10 50q18 14 34 10q16 4 34-10q22-20 10-50q-14-28-44-22z" fill="url(#hwP)"/>'+
+    '<path d="M60 24q-12 10-12 40t12 38M60 24q12 10 12 40t-12 38M40 28q-16 16-14 40t20 32M80 28q16 16 14 40t-20 32" stroke="#D2600C" stroke-width="2.4" fill="none" opacity=".55"/>'+
+    '<path d="M57 24q-2-12 8-18l4 4q-6 6-5 14z" fill="#5E7A2A"/><path d="M66 10q10-6 18 0" stroke="#7FA03A" stroke-width="3" fill="none" stroke-linecap="round"/>'+
+    '<path d="M34 50l14 8-16 4z M86 50l-14 8 16 4z" fill="url(#hwPin)"/>'+
+    '<path d="M32 72q28 20 56 0q-4 14-12 16l-4-6-6 8-6-8-6 8-6-8-4 6q-8-2-12-16z" fill="url(#hwPin)"/>'+
+    '<path d="M28 40q6-12 18-14" stroke="#FFE2B0" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/></svg>';},
+  candy:function(s,c1,c2){c1=c1||"#FF8A3D";c2=c2||"#FFD27A";return '<svg viewBox="0 0 90 44" width="'+s+'" height="'+(s*44/90|0)+'">'+
+    '<path d="M24 22L4 8q-2 14 0 28z" fill="'+c1+'"/><path d="M66 22l20-14q2 14 0 28z" fill="'+c1+'"/>'+
+    '<ellipse cx="45" cy="22" rx="24" ry="15" fill="'+c1+'"/><path d="M30 12q8 22 4 22M44 8q6 26 2 28M58 10q6 22 2 24" stroke="'+c2+'" stroke-width="5" fill="none" opacity=".85"/>'+
+    '<ellipse cx="38" cy="15" rx="10" ry="4" fill="#fff" opacity=".55"/></svg>';},
+  lolly:function(s){return '<svg viewBox="0 0 70 90" width="'+s+'" height="'+(s*90/70|0)+'">'+
+    '<rect x="33" y="44" width="5" height="44" rx="2.5" fill="#F4ECE6" transform="rotate(20 35 60)"/>'+
+    '<circle cx="30" cy="30" r="26" fill="#FFF2F2"/><path d="M30 30m-20 0a20 20 0 0 1 40 0a14 14 0 0 1-28 0a8 8 0 0 1 16 0" stroke="#E83A4E" stroke-width="7" fill="none"/>'+
+    '<ellipse cx="20" cy="16" rx="8" ry="4" fill="#fff" opacity=".7" transform="rotate(-30 20 16)"/></svg>';},
+  skull:function(s){return '<svg viewBox="0 0 80 84" width="'+s+'" height="'+(s*84/80|0)+'"><defs>'+
+    '<radialGradient id="hwS" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".7" stop-color="#EAE6EE"/><stop offset="1" stop-color="#B9B2C4"/></radialGradient></defs>'+
+    '<ellipse cx="40" cy="80" rx="26" ry="4" fill="rgba(0,0,0,.3)"/>'+
+    '<path d="M40 6q30 0 32 30q1 16-10 22v12q0 6-6 6H24q-6 0-6-6V58Q7 52 8 36Q10 6 40 6z" fill="url(#hwS)"/>'+
+    '<ellipse cx="27" cy="40" rx="9" ry="10" fill="#2A1F33"/><ellipse cx="53" cy="40" rx="9" ry="10" fill="#2A1F33"/>'+
+    '<path d="M40 52l-5 8h10z" fill="#2A1F33"/><path d="M30 68v8M37 68v8M44 68v8M51 68v8" stroke="#B9B2C4" stroke-width="2"/>'+
+    '<ellipse cx="30" cy="16" rx="12" ry="5" fill="#fff" opacity=".8" transform="rotate(-18 30 16)"/></svg>';},
+  hat:function(s){return '<svg viewBox="0 0 120 80" width="'+s+'" height="'+(s*80/120|0)+'"><defs>'+
+    '<linearGradient id="hwH" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A3344"/><stop offset="1" stop-color="#121016"/></linearGradient></defs>'+
+    '<ellipse cx="60" cy="68" rx="56" ry="11" fill="url(#hwH)"/><path d="M34 64q4-30 18-44q10-12 30-14q-14 8-16 22q-2 14 0 36z" fill="url(#hwH)"/>'+
+    '<path d="M35 58q24 6 31 2l-1-10q-14 4-29 0z" fill="#7C3AED"/><rect x="45" y="50" width="12" height="11" rx="2" fill="none" stroke="#F5B921" stroke-width="3"/>'+
+    '<path d="M54 22q8-10 22-14" stroke="#5A5266" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/></svg>';},
+  cat:function(s){return '<svg viewBox="0 0 110 110" width="'+s+'" height="'+s+'"><defs>'+
+    '<radialGradient id="hwC" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#3C3646"/><stop offset="1" stop-color="#0F0D14"/></radialGradient></defs>'+
+    '<ellipse cx="50" cy="106" rx="34" ry="4" fill="rgba(0,0,0,.35)"/>'+
+    '<path d="M76 92q30-4 26-30q-2-10 6-14" stroke="#16131C" stroke-width="7" fill="none" stroke-linecap="round"/>'+
+    '<path d="M28 104q-6-36 10-50h26q18 14 12 50z" fill="url(#hwC)"/>'+
+    '<path d="M26 44l4-30 16 16zM74 44l-4-30-16 16z" fill="url(#hwC)"/><path d="M30 34l2-14 9 9zM70 34l-2-14-9 9z" fill="#E58FB0"/>'+
+    '<ellipse cx="50" cy="44" rx="26" ry="22" fill="url(#hwC)"/>'+
+    '<ellipse cx="40" cy="44" rx="6" ry="7" fill="#FFD23F"/><ellipse cx="60" cy="44" rx="6" ry="7" fill="#FFD23F"/>'+
+    '<ellipse cx="40" cy="44" rx="2" ry="5.4" fill="#120F17"/><ellipse cx="60" cy="44" rx="2" ry="5.4" fill="#120F17"/>'+
+    '<circle cx="42" cy="41" r="1.4" fill="#fff"/><circle cx="62" cy="41" r="1.4" fill="#fff"/><path d="M47 53l3 3 3-3z" fill="#E58FB0"/>'+
+    '<path d="M30 52l-14-2M30 56l-14 3M70 52l14-2M70 56l14 3" stroke="#8B8297" stroke-width="1.2"/></svg>';},
+  bat:function(s){return '<svg viewBox="0 0 90 44" width="'+s+'" height="'+(s*44/90|0)+'">'+
+    '<path d="M45 18q-6-8-10-2q-8-10-20-8q8 6 6 14q-10-2-18 6q14 0 22 8q6-8 12-4q4 6 8 6t8-6q6-4 12 4q8-8 22-8q-8-8-18-6q-2-8 6-14q-12-2-20 8q-4-6-10 2z" fill="#16131C"/>'+
+    '<circle cx="41" cy="22" r="1.6" fill="#FFD23F"/><circle cx="49" cy="22" r="1.6" fill="#FFD23F"/></svg>';},
+  ghost:function(s){return '<svg viewBox="0 0 70 84" width="'+s+'" height="'+(s*84/70|0)+'"><defs>'+
+    '<radialGradient id="hwG" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D9D0EA"/></radialGradient></defs>'+
+    '<path d="M35 4q28 0 28 32v40l-8-6-8 8-6-8-6 8-6-8-8 8-8-6V36Q7 4 35 4z" fill="url(#hwG)"/>'+
+    '<ellipse cx="26" cy="34" rx="4.4" ry="6" fill="#2A1F33"/><ellipse cx="44" cy="34" rx="4.4" ry="6" fill="#2A1F33"/><ellipse cx="35" cy="48" rx="5" ry="4" fill="#2A1F33"/></svg>';}
+};
+/* pairs of stickers for each card corner, in the order the cards appear */
+var HW_SET=[["pumpkin","candy"],["pumpkin","hatskull"],["skull","cat"],["cat","hatskull2"],["ghost","pumpkin"],["lolly","bat"],["skull","candy2"]];
+function hwSticker(kind){
+  if(kind==="hatskull") return '<span class="hwStack">'+HWS.hat(76)+HWS.skull(52)+'</span>';
+  if(kind==="hatskull2") return '<span class="hwStack">'+HWS.hat(70)+HWS.ghost(44)+'</span>';
+  if(kind==="candy2") return HWS.candy(54,"#7C3AED","#C4A5FF");
+  if(kind==="candy") return HWS.candy(54);
+  return HWS[kind](kind==="pumpkin"?78:kind==="cat"?84:kind==="bat"?62:kind==="lolly"?44:56);
+}
+function hwDecorate(){
+  var cards=[].slice.call(document.querySelectorAll(".app .card"));
+  cards.forEach(function(cd,i){
+    if(cd.querySelector(".hwDeco")) return;
+    cd.classList.add([0,4].indexOf(i%5)>=0?"hwPurple":"hwBlack");
+    var pair=HW_SET[i%HW_SET.length];
+    var L=el("span","hwDeco hwL",hwSticker(pair[0])), Rt=el("span","hwDeco hwR",hwSticker(pair[1]));
+    L.setAttribute("aria-hidden","true");Rt.setAttribute("aria-hidden","true");
+    cd.appendChild(L);cd.appendChild(Rt);
+  });
+}
+function hwBackdrop(){
+  var stars='';for(var i=0;i<46;i++){var x=(i*137)%1000,y=(i*71)%520;stars+='<circle cx="'+x+'" cy="'+y+'" r="'+(i%5?1.2:2.2)+'" fill="#F3E8FF" opacity="'+(i%3?.55:.9)+'"/>';}
+  var win='';for(var k=0;k<14;k++){win+='<rect x="'+(120+k*52)+'" y="'+(700+(k%3)*18)+'" width="12" height="9" rx="2" fill="#FFB347" opacity="'+(k%4?.75:.35)+'"/>';}
+  var bg=el("div","",
+    '<svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs>'+
+    '<radialGradient id="hwMoonG" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="rgba(220,190,255,.55)"/><stop offset="1" stop-color="rgba(220,190,255,0)"/></radialGradient>'+
+    '<radialGradient id="hwMoon" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#FFFBEA"/><stop offset="1" stop-color="#E8D9B0"/></radialGradient>'+
+    '<linearGradient id="hwFog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(160,120,220,0)"/><stop offset="1" stop-color="rgba(160,120,220,.35)"/></linearGradient></defs>'+
+    stars+'<circle cx="760" cy="200" r="230" fill="url(#hwMoonG)"/><circle cx="760" cy="200" r="92" fill="url(#hwMoon)"/>'+
+    '<g fill="#D9C99A" opacity=".55"><circle cx="730" cy="180" r="14"/><circle cx="790" cy="230" r="10"/><circle cx="770" cy="160" r="6"/></g>'+
+    /* haunted plant on the hill */
+    '<path d="M0 800q160-60 330-40t330-30t340 20V1000H0z" fill="#2A1846"/>'+
+    '<g fill="#1A0F2C"><path d="M90 820V700l50 30v-30l50 30v-30l50 30v-30l50 30v90z"/><rect x="300" y="610" width="22" height="120"/><rect x="336" y="640" width="16" height="90"/>'+
+      '<path d="M560 830V690h240v140z"/><path d="M552 694l128-60 128 60z"/><rect x="820" y="660" width="18" height="160"/></g>'+win+
+    '<path d="M300 606q-8-20 10-30q4-16 22-12" stroke="#5B4A7A" stroke-width="10" fill="none" stroke-linecap="round" opacity=".6"/>'+
+    /* bare trees */
+    '<path d="M40 1000V860q-4-30-30-50M40 900q10-30 40-40M40 870q-20-20-24-46" stroke="#120A1E" stroke-width="12" fill="none" stroke-linecap="round"/>'+
+    '<path d="M960 1000V840q6-30 36-46M960 890q-14-26-46-34M960 860q14-24 10-52" stroke="#120A1E" stroke-width="12" fill="none" stroke-linecap="round"/>'+
+    '<rect x="0" y="880" width="1000" height="120" fill="url(#hwFog)"/></svg>'+
+    '<span class="hwBat b1">'+HWS.bat(54)+'</span><span class="hwBat b2">'+HWS.bat(38)+'</span><span class="hwBat b3">'+HWS.bat(30)+'</span>');
+  bg.id="hwBg";document.body.insertBefore(bg,document.body.firstChild);
+}
+if(HW){ try{ hwBackdrop(); hwDecorate(); new MutationObserver(function(){hwDecorate();}).observe(document.querySelector(".app")||document.body,{childList:true}); }catch(e){} }
 
 /* ==========================================================================
    BOOT
