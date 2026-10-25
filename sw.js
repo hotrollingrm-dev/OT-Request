@@ -5,7 +5,7 @@
    ทุกครั้งที่อัปไฟล์ใหม่ขึ้น GitHub ให้เปลี่ยนเลข CACHE ด้านล่าง
    (หน้า index ดึงของใหม่ก่อนอยู่แล้ว แต่ไอคอน/ไฟล์อื่นจะใช้ของในแคช)
 ============================================================================= */
-const CACHE = 'otreq-v13';
+const CACHE = 'otreq-v14';
 const CORE = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png',
@@ -43,7 +43,7 @@ self.addEventListener('fetch', e => {
       const cache = await caches.open(CACHE);
       try {
         const net = await Promise.race([
-          fetch(req),
+          fetch(req.url, { cache: 'no-store' }),   /* skip the browser's HTTP cache so a new upload shows at once */
           new Promise((_, rej) => setTimeout(() => rej(new Error('slow')), 3500))
         ]);
         if (net && net.ok) cache.put('./index.html', net.clone());
